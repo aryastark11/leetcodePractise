@@ -11,11 +11,13 @@ class RateLimiter:
             return False
 
         if uid not in list(self.uidMap.keys()):
-            # Add the lower bound of expire time range to the dict as value
+            # Add the last expire time to the dict as value
             self.uidMap.update({
                 uid: timestamp})
             return False
         else:
+            #expire=5, last request 15, now it is 16.
+            # 16-5 = 11 , last =15 --> should fail --> return True
             if self.uidMap[uid] > timestamp-self.rateExpireInterval:
                 return True
             else:
